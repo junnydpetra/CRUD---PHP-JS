@@ -1,5 +1,6 @@
 const tbody = document.querySelector(".listar-usuarios");
 const cadForm = document.getElementById("cad-usuario-form");
+const editForm = document.getElementById("edit-usuario-form");
 const msgAlertaErroCad = document.getElementById("msgAlertaErroCad");
 const msgAlerta = document.getElementById("msgAlerta");
 const cadModal = new bootstrap.Modal(document.getElementById("cadUsuarioModal"));
@@ -81,7 +82,25 @@ async function editarUsuarioDados(id)
     } else {
         const editModal = new bootstrap.Modal(document.getElementById("editUsuarioModal"));
         editModal.show();
+        document.getElementById("editid").value = resposta['dados'].id;
+        document.getElementById("editnome").value = resposta['dados'].nome;
+        document.getElementById("editemail").value = resposta['dados'].email;
     }
  
 }
 
+editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const dadosForm = new FormData(editForm);
+    console.log(dadosForm); 
+
+    const dados = await fetch("editar.php", {
+        method: "POST",
+        body:dadosForm
+    });
+
+    const resposta = await dados.json();
+    console.log(resposta);
+     
+});
