@@ -34,8 +34,12 @@
                         <td>
                             <button id='$id' class='btn btn-outline-primary btn-sm'
                             onclick='visualizarUsuario($id)'>Visualizar</button>
+
                             <button id='$id' class='btn btn-outline-warning btn-sm'
                             onclick='editarUsuarioDados($id)'>Editar</button>
+                            
+                            <button id='$id' class='btn btn-outline-danger btn-sm'
+                            onclick='excluirUsuarioDados($id)'>Excluir</button>
                         </td>
                     </tr>";
         } 

@@ -2,6 +2,7 @@ const tbody = document.querySelector(".listar-usuarios");
 const cadForm = document.getElementById("cad-usuario-form");
 const editForm = document.getElementById("edit-usuario-form");
 const msgAlertaErroCad = document.getElementById("msgAlertaErroCad");
+const msgAlertaErroEdit = document.getElementById("msgAlertaErroEdit");
 const msgAlerta = document.getElementById("msgAlerta");
 const cadModal = new bootstrap.Modal(document.getElementById("cadUsuarioModal"));
 
@@ -72,6 +73,8 @@ async function visualizarUsuario(id)
 
 async function editarUsuarioDados(id)
 {
+    msgAlertaErroEdit.innerHTML = "";   
+
     const dados = await fetch('visualizar.php?id=' + id);
     const resposta = await dados.json();
     console.log(resposta);
@@ -92,6 +95,8 @@ async function editarUsuarioDados(id)
 editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    document.getElementById("edit-usuario-btn").value = "Salvando...";
+
     const dadosForm = new FormData(editForm);
     console.log(dadosForm); 
 
@@ -102,5 +107,37 @@ editForm.addEventListener("submit", async (e) => {
 
     const resposta = await dados.json();
     console.log(resposta);
-     
+   
+    if (resposta['erro']) 
+    {
+        msgAlertaErroEdit.innerHTML = resposta['msg'];
+    } else {
+        msgAlertaErroEdit.innerHTML = resposta['msg'];
+        listarUsuarios(1);
+    }
+    
+    document.getElementById("edit-usuario-btn").value = "Salvar";
 });
+
+
+async function excluirUsuarioDados(id) 
+{
+    var confirmar = confirm("ATENÇÃO: Tem certeza que deseja excluir o registro selecionado?");
+
+    if (confirmar == true) 
+    {
+        const dados = await fetch("excluir.php?id=" + id);
+        const resposta = await dados.json();
+    
+        if(resposta['erro']) 
+        {
+            msgAlerta.innerHTML = resposta['msg'];
+        } else {
+            msgAlerta.innerHTML = resposta['msg'];
+            listarUsuarios(1);
+        }
+    }
+    
+    
+}
+
